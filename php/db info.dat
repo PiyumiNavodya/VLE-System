@@ -1,0 +1,11 @@
+create user 'vleSystem'@'localhost' identified by 'dehue7543FS';
+grant select,insert,update,delete on vle.* to 'vleSystem'@'localhost';
+flush privileges;
+
+/*
+if (password_verify($inputPassword, $storedHashedPassword)) {
+    //  Password matches — log the user in
+} else {
+    //  Invalid password
+}
+*/

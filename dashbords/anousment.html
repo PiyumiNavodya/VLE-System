@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Announcements - University VLE</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            background: #f6f8fa;
+        }
+        .announcement-form {
+            max-width: 600px;
+            margin: 30px auto;
+            background: #fff;
+            padding: 32px 28px 24px 28px;
+            border-radius: 12px;
+            box-shadow: 0 4px 16px #e0e0e0;
+        }
+        .announcement-form h2 {
+            margin-bottom: 18px;
+            color: #3b2fd4;
+            font-size: 1.4em;
+        }
+        .announcement-form label {
+            font-weight: 600;
+            margin-bottom: 6px;
+            display: block;
+            color: #222;
+        }
+        .announcement-form input[type="text"],
+        .announcement-form textarea,
+        .announcement-form select {
+            width: 100%;
+            padding: 10px 12px;
+            margin-bottom: 16px;
+            border: 1px solid #d0d0d0;
+            border-radius: 7px;
+            font-size: 1em;
+            background: #f9f9fc;
+            transition: border 0.2s;
+        }
+        .announcement-form input[type="text"]:focus,
+        .announcement-form textarea:focus,
+        .announcement-form select:focus {
+            border-color: #3b2fd4;
+            background: #f0f4ff;
+            outline: none;
+        }
+        .announcement-form textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+        .announcement-form button {
+            background: #3b2fd4;
+            color: #fff;
+            border: none;
+            padding: 12px 32px;
+            border-radius: 7px;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 1em;
+            box-shadow: 0 2px 8px #e0e0e0;
+            transition: background 0.2s;
+        }
+        .announcement-form button:hover {
+            background: #2a1bb7;
+        }
+        .audience-section {
+            background: #f7f7ff;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 18px 16px 10px 16px;
+            margin-bottom: 28px;
+        }
+        .audience-section label {
+            margin-bottom: 8px;
+        }
+        .audience-section .radio-group {
+            display: flex;
+            gap: 28px;
+            margin-bottom: 10px;
+        }
+        .audience-section input[type="radio"] {
+            accent-color: #3b2fd4;
+        }
+        .audience-section select {
+            margin-bottom: 10px;
+        }
+        .announcement-list {
+            max-width: 700px;
+            margin: 40px auto 0 auto;
+        }
+        .announcement-item {
+            background: #fffbe6;
+            border-left: 6px solid #ffd600;
+            margin-bottom: 18px;
+            padding: 18px 22px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px #f0e6b2;
+        }
+        .announcement-item h3 {
+            margin: 0 0 8px 0;
+            color: #3b2fd4;
+        }
+        .announcement-item .date {
+            font-size: 0.95em;
+            color: #888;
+            margin-bottom: 6px;
+        }
+        @media (max-width: 700px) {
+            .announcement-form, .announcement-list {
+                max-width: 98vw;
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+<body class="body">
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <i class="fas fa-graduation-cap"></i>
+                <span>University VLE</span>
+            </div>
+            <div class="nav-items">
+                <a href="admin.php" class="logout-btn">
+                    <i class="fas fa-arrow-left"></i> Back to Dashboard
+                </a>
+                <button id="logout-btn" class="logout-btn">
+                    <i class="fas fa-sign-out-alt"></i>Logout
+                </button>
+            </div>
+        </div>
+    </nav>
+    <main class="main-content">
+        <div class="header-section">
+            <h2>Post Announcement</h2>
+            <p>Create a new announcement for all users or targeted groups.</p>
+        </div>
+        <form class="announcement-form" method="post" action="post_announcement.php">
+            <h2>New Announcement</h2>
+            <div class="audience-section">
+                <label style="font-weight:bold;">Target Audience</label>
+                <div class="radio-group">
+                    <label>
+                        <input type="radio" name="audience_type" value="all" checked onclick="showAudienceOptions()"> All
+                    </label>
+                    <label>
+                        <input type="radio" name="audience_type" value="custom" onclick="showAudienceOptions()"> Custom
+                    </label>
+                </div>
+                <div id="custom-audience-options" style="display:none; margin-top:10px;">
+                    <div style="margin-bottom:12px;">
+                        <label style="font-weight:500;">Audience Group</label>
+                        <select name="group" id="audience-group" onchange="showGroupDetails()" style="width:100%;">
+                            <option value="">-- Select Group --</option>
+                            <option value="students">Students</option>
+                            <option value="staff">Staff</option>
+                            <option value="faculty">Faculty</option>
+                        </select>
+                    </div>
+                    <div id="students-options" style="display:none; margin-bottom:12px;">
+                        <label style="font-weight:500;">Student Year</label>
+                        <select name="student_year" style="width:100%;">
+                            <option value="">-- Select Year --</option>
+                            <option value="all">All Years</option>
+                            <option value="1">Year 1</option>
+                            <option value="2">Year 2</option>
+                            <option value="3">Year 3</option>
+                            <option value="4">Year 4</option>
+                        </select>
+                        <label style="font-weight:500; margin-top:8px;">Faculty</label>
+                        <select name="student_faculty" style="width:100%;">
+                            <option value="">-- All Faculties --</option>
+                            <option value="Engineering">Engineering</option>
+                            <option value="Science">Science</option>
+                            <option value="Computing">Computing</option>
+                        </select>
+                    </div>
+                    <div id="staff-options" style="display:none; margin-bottom:12px;">
+                        <label style="font-weight:500;">Staff Type</label>
+                        <select name="staff_type" style="width:100%;">
+                            <option value="">-- Select Staff Type --</option>
+                            <option value="all">All Staff</option>
+                            <option value="admin">Admin</option>
+                            <option value="lecture">Lecture</option>
+                            <option value="support">Support Staff</option>
+                        </select>
+                        <label style="font-weight:500; margin-top:8px;">Faculty</label>
+                        <select name="staff_faculty" style="width:100%;">
+                            <option value="">-- Any Faculty --</option>
+                            <option value="Engineering">Engineering</option>
+                            <option value="Science">Science</option>
+                            <option value="Computing">Computing</option>
+                        </select>
+                    </div>
+                    <div id="faculty-options" style="display:none; margin-bottom:12px;">
+                        <label style="font-weight:500;">Faculty</label>
+                        <select name="faculty" style="width:100%;">
+                            <option value="">-- Select Faculty --</option>
+                            <option value="Engineering">Engineering</option>
+                            <option value="Science">Science</option>
+                            <option value="Computing">Computing</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <label for="title">Title</label>
+            <input type="text" id="title" name="title" required maxlength="100" placeholder="Announcement Title">
+            <label for="message">Message</label>
+            <textarea id="message" name="message" required maxlength="1000" placeholder="Write your announcement here..."></textarea>
+            <button type="submit"><i class="fas fa-bullhorn"></i> Post Announcement</button>
+        </form>
+        <div class="announcement-list">
+            <!-- Example announcements, replace with PHP loop -->
+            <div class="announcement-item">
+                <div class="date">2025-08-01</div>
+                <h3>Welcome to the New Semester!</h3>
+                <p>Classes begin next Monday. Please check your schedules and course materials.</p>
+            </div>
+            <div class="announcement-item">
+                <div class="date">2025-07-25</div>
+                <h3>System Maintenance</h3>
+                <p>The VLE will be offline for maintenance on Saturday from 2am to 6am.</p>
+            </div>
+            <!-- End example -->
+        </div>
+    </main>
+    <footer class="footer">
+        <div class="footer-container">
+            <p>&copy; 2023 University VLE System. All rights reserved.</p>
+            <div class="social-icons">
+                <a href="#"><i class="fab fa-facebook"></i></a>
+                <a href="#"><i class="fab fa-twitter"></i></a>
+                <a href="#"><i class="fab fa-linkedin"></i></a>
+                <a href="#"><i class="fab fa-instagram"></i></a>
+            </div>
+        </div>
+    </footer>
+    <script>
+        document.getElementById('logout-btn').addEventListener('click', () => {
+            window.location.href = '../index.php';
+        });
+        function showAudienceOptions() {
+            const customOptions = document.getElementById('custom-audience-options');
+            const customRadio = document.querySelector('input[name="audience_type"][value="custom"]');
+            customOptions.style.display = customRadio.checked ? 'block' : 'none';
+            if (!customRadio.checked) {
+                hideAllGroupDetails();
+            }
+        }
+        function showGroupDetails() {
+            hideAllGroupDetails();
+            const group = document.getElementById('audience-group').value;
+            if (group === "students") {
+                document.getElementById('students-options').style.display = "block";
+            } else if (group === "staff") {
+                document.getElementById('staff-options').style.display = "block";
+            } else if (group === "faculty") {
+                document.getElementById('faculty-options').style.display = "block";
+            }
+        }
+        function hideAllGroupDetails() {
+            document.getElementById('students-options').style.display = "none";
+            document.getElementById('staff-options').style.display = "none";
+            document.getElementById('faculty-options').style.display = "none";
+        }
+    </script>
+</body>
+</html>
